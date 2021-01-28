@@ -34,18 +34,18 @@
 # ------------------------------------------------------------------------ #
 
 # ------------------------------- VARIÁVEIS ----------------------------------------- #
-SEMCOR="\033[0m"
-VERDE="\033[32;1m"
-VERMELHO="\033[31;1m"
-MENSAGEM_USO="
-     $(basename $0) - [OPÇÕES]
+NOCOLOR="\033[0m"
+GREEN="\033[32;1m"
+RED="\033[31;1m"
+USAGE="
+     $(basename $0) - [OPTIONS]
 
      -h - Help
      -v - Version
      -t - Test oci-cli install
      -i - Install oci-cli
      "
-VERSAO="v0.1"
+VERSION="v0.1"
 TEST_INSTALL="0"
 INSTALL_OCI_CLI="0"
 
@@ -60,36 +60,36 @@ INSTALL_OCI_CLI="0"
 Test () {
      [ ! -x "$(which oci 2> /dev/null)" ] && TEST_INSTALL=1
      if [ ${TEST_INSTALL} -eq 1 ];
-        then echo -e "${VERMELHO}
+        then echo -e "${RED}
 
 The oci-cli is not installed or is not in user PATH !!!!
 If you have already installed make sure you have added the directory to the path.
 If you have not installed, install using:
 ./copy-oci-bucket.sh -i
-${SEMCOR}" && exit 0
+${NOCOLOR}" && exit 0
         else
-            echo -e "${VERDE} oci-cli Was successfully installed!! ${SEMCOR}" && exit 0
+            echo -e "${GREEN} oci-cli Was successfully installed!! ${NOCOLOR}" && exit 0
      fi
 }
 
 Install () {
-          echo -e "${VERMELHO} Attention: choose the default options!
+          echo -e " Attention: choose the default options!
           They are sufficient for the purpose of this script!
-          After installing, run '"oci setup config"' to configure the OCI access credentials.
+          After installing, run ${RED} oci setup config ${NOCOLOR} to configure the OCI access credentials.
 
           Press Enter to continue!
-          ${SEMCOR}" && read && bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)" && exec -l $SHELL && exit 0
+          " && read && bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)" && exec -l $SHELL && exit 0
 }
 
 # ------------------------------------------------------------------------ #
 
 # ------------------------------- EXECUTION ----------------------------------------- #
 case "$1" in
-  -h) echo "$MENSAGEM_USO" && exit 0          ;;
-  -v) echo "$VERSAO" && exit 0                ;;
+  -h) echo "$USAGE" && exit 0          ;;
+  -v) echo "$VERSION" && exit 0                ;;
   -t) Test                                    ;;
   -i) Install                                 ;;
-   *) echo "$MENSAGEM_USO" && exit 0          ;;
+   *) echo "$USAGE" && exit 0          ;;
 esac
 
 
